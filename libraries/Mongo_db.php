@@ -94,22 +94,6 @@ class Mongo_db
 	private $_dbname = '';
 	
 	/**
-	 * Persist connection.
-	 * 
-	 * @var boolean
-	 * @access private
-	 */
-	private $_persist = TRUE;
-	
-	/**
-	 * Persist key.
-	 * 
-	 * @var string
-	 * @access private
-	 */
-	private $_persist_key = 'ci_mongo';
-	
-	/**
 	 * Use replica set.
 	 * 
 	 * @var FALSE|string
@@ -1798,9 +1782,7 @@ class Mongo_db
 	 * Connect to MongoDB
 	 * 
 	 * Establish a connection to MongoDB using the connection string generated in
-	 * the connection_string() method.  If 'mongo_persist_key' was set to true in the
-	 * config file, establish a persistent connection.  We allow for only the 'persist'
-	 * option to be set because we want to establish a connection immediately.
+	 * the connection_string() method.
 	 * 
 	 * @return object
 	 * @access private
@@ -1808,12 +1790,7 @@ class Mongo_db
 	private function _connect()
 	{
 		$options = array();
-		
-		if ($this->_persist === TRUE)
-		{
-			$options['persist'] = $this->_persist_key;
-		}
-		
+
 		if ($this->_replica_set !== FALSE)
 		{
 			$options['replicaSet'] = $this->_replica_set;
@@ -1850,8 +1827,6 @@ class Mongo_db
 		$this->_user = trim($this->_config_data['mongo_username']);
 		$this->_pass = trim($this->_config_data['mongo_password']);
 		$this->_dbname = trim($this->_config_data['mongo_database']);
-		$this->_persist = $this->_config_data['mongo_persist'];
-		$this->_persist_key = trim($this->_config_data['mongo_persist_key']);
 		$this->_replica_set = $this->_config_data['mongo_replica_set'];
 		$this->_query_safety = trim($this->_config_data['mongo_query_safety']);
 		$dbhostflag = (bool) $this->_config_data['mongo_host_db_flag'];
